@@ -1,0 +1,140 @@
+{ "name": "Cisco IOS",
+  "foldingStartMarker":"^\\s*.+$",
+  "foldingStopMarker":"^\\s*!.*$",
+  "scopeName": "text.ios", 
+  "fileTypes": ["ios"], 
+  "patterns": [
+  {"include":"#comment"},
+  {"include":"#control"},
+  {"include":"#ip_address"},
+  {"include":"#number"},
+  {"include":"#variable"},
+  {"include":"#operator"},
+  {"include":"#url"},
+  {"include":"#router"},
+  {"include":"#interface_clause"}
+  ],
+  "repository":{
+    "comment":{
+      "patterns":[
+      { "name":"comment.line.number-sign.ios",
+        "match":"(!).*$\\n?",
+        "captures":{
+          "1":{"name":"puncuation.definition.comment.ios"}
+          }
+        }
+      ]
+    },
+    "ip_address":{
+      "patterns":[
+      { "name":"constant.numeric.ip-address.ios",
+        "match":"\\s(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\s"
+        },
+      { "name":"invalid.illegal.ip-address.ios",
+        "match":"\\s(?:(?:25[6-9]|2[6-9][0-9]|[3-9]?[0-9][0-9]?)\\.)\\b"
+        }
+      ]
+    },
+    "number":{
+      "patterns":[
+      { "name":"constant.numeric.integer.ios",
+        "match":"\\b(?:[1-9]+[0-9]*|0)\\b"
+        }
+      ]
+    },
+    "control":{
+      "patterns":[
+      { "match":"\\b(no|no sh|shut|shutdown|reload|reset|activate)\\b",
+        "captures":{
+          "1":{"name":"keyword.control.ios"}
+          }
+        }
+      ]
+    },
+    "operator":{
+      "patterns":[
+      { "name":"keyword.operator.comparison.ios",
+        "match":"\\b(?i:eq|neq|gt|lt|range|ge|le)\\b"
+        }
+      ]
+    },
+    "url":{
+      "patterns":[
+      { "name":"string.unquoted.ios",
+        "begin":"\\b(https?|t?ftps?|flash|disk[0-9]|scp|ssh|telnet):(?=[A-Za-z0-9_./-])",
+        "end":"(?=\\s+)"
+        }
+      ]
+    },
+    "interface_id":{
+      "patterns":[
+      { "contentName":"meta.interface-id.ios",
+        "begin":"\\b(?i:(?i:fast|gigabit|)ethernet|null|bvi|virtual-?[a-z]*|fa|gi|e|se|serial|lo|loopback|tun|tunnel)(?=\\s?[0-9])",
+        "end":"([0-9][0-9/. ]*)\\b",
+        "beginCaptures":{
+          "0":{"name":"support.constant.type.interface.ios"}
+          },
+        "endCaptures":{
+          "1":{"name":"constant.numeric.interface-number.ios"}
+          }
+        }
+      ]
+    },
+    "router_id":{
+      "patterns":[
+      { "contentName":"meta.router-id.ios",
+        "begin":"\\b(?i:eigrp|rip|isis|odr|ospf|bgp|mobile)",
+        "end":"(?:\\s+(?:[0-9]+)|(?:[A-Z]+)|)\\b",
+        "beginCaptures":{
+          "0":{"name":"support.constant.type.router.ios"}
+          },
+        "endCaptures":{
+          "0":{"name":"constant.numeric.router-number.ios"},
+          "1":{"name":"constant.character.router-tag.ios"}
+          }
+        }
+      ]
+    },
+    "variable":{
+      "patterns":[
+      { "name":"variable.parameter.ios",
+        "match":"\\b([A-Z]+[A-Z0-9_ -]*)\\b",
+        "comment":"User created objects"
+        }
+      ]
+    },
+    "router":{
+      "patterns":[
+      { "name":"meta.router.ios",
+        "begin":"^\\s*(router)\\s+(?=[A-Za-z-]+[0-9 ]*)",
+        "beginCaptures":{
+          "1":{"name":"entity.name.type.router.ios"}
+          },
+        "end":"(\\s*$)",
+        "patterns":[
+        { "include":"#router_id"},
+        { "name":"invalid.illegal.router-id.ios",
+          "match":"(?:.*$)"}
+        ]
+        }
+      ]
+    },
+    "interface_clause":{
+      "patterns":[
+      { "name":"meta.interface.ios",
+        "begin":"^\\s*(interface|int)\\s+(?=[A-Za-z-]+[0-9/. ]*)",
+        "beginCaptures":{
+          "1":{"name":"entity.name.type.interface.ios"}
+          },
+        "end":"(\\s*$)",
+        "patterns":[
+        { "include":"#interface_id"},
+        { "name":"invalid.illegal.interface-id.ios",
+          "match":"(?:.*$)"}
+        ]
+        }
+      ]
+    }
+  },
+  "uuid": "3818ca6a-1ea2-497b-ba32-d1cfc42ed4a0"
+}
